@@ -18,16 +18,16 @@ pipeline {
     }
     stage('Build') {
       steps {
-        sh 'docker context use default'
-        sh 'docker-compose build'
-        sh 'docker-compose push'
+        sudo sh 'docker context use default'
+        sudo sh 'docker-compose build'
+        sudo sh 'docker-compose push'
       }
     }
     stage('Deploy') {
       steps {
-        sh 'docker context use myecscontext'
-        sh 'docker compose up'
-        sh 'docker compose ps --format json'
+        sudo sh 'docker context use myecscontext'
+        sudo sh 'docker compose up'
+        sudo sh 'docker compose ps --format json'
       }
     }
   }
