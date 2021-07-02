@@ -6,6 +6,7 @@ pipeline {
   environment {
     DOCKER_HUB_CREDS = credentials('dhiraj-docker-hub')
     AWS_CREDS = credentials('dhiraj-aws-cred')
+    KEYCHAIN_PASSWORD = credentials('darinpope-keychain')
   }
   stages {
     stage('Tooling versions') {
@@ -14,6 +15,11 @@ pipeline {
           docker --version
           docker compose version
         '''
+      }
+    }
+    stage('Unlock keychain') {
+      steps {
+        sh 'security -v unlock-keychain -p $KEYCHAIN_PASSWORD ~/Library/Keychains/login.keychain-db'
       }
     }
     stage('Build') {
@@ -29,6 +35,11 @@ pipeline {
         sh 'docker compose up'
         sh 'docker compose ps --format json'
       }
+    }
+  }
+  post {
+    always {
+        sh 'security -v lock-keychain ~/Library/Keychains/login.keychain-db'
     }
   }
 }
