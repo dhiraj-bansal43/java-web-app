@@ -6,7 +6,7 @@ pipeline {
   environment {
     DOCKER_HUB_CREDS = credentials('dhiraj-docker-hub')
     AWS_CREDS = credentials('dhiraj-aws-cred')
-    AWS_DEFAULT_REFION='us-east-2'
+    AWS_DEFAULT_REGION='us-east-2'
   }
   stages {
     stage('Tooling versions') {
